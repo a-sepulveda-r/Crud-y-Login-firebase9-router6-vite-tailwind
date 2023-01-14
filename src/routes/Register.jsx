@@ -1,19 +1,22 @@
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { UserContext } from "../context/UserProvider";
 
-const Login = () => {
+// comdandorafce para hacer un archivo/componente basico de react
+const Register = () => {
   const [email, setEmail] = useState("manolito34@gmail.com");
   const [password, setPassword] = useState("123456");
 
-  const { loginUser } = useContext(UserContext);
   const navigate = useNavigate();
+
+  const { registerUser } = useContext(UserContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("usuario logueado " + email, password);
+    console.log("procesando form: " + email, password);
     try {
-      await loginUser(email, password);
+      await registerUser(email, password);
+      console.log("usuario creado");
       navigate("/");
     } catch (error) {
       console.log(error.code);
@@ -22,7 +25,7 @@ const Login = () => {
 
   return (
     <>
-      <h1>Login</h1>
+      <h1>Register</h1>
       <form onSubmit={handleSubmit}>
         <input
           type="email"
@@ -36,10 +39,10 @@ const Login = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit">Login</button>
+        <button type="submit">registrar</button>
       </form>
     </>
   );
 };
 
-export default Login;
+export default Register;
