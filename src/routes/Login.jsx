@@ -21,13 +21,7 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
     setError,
-  } = useForm({
-    defaultValues: {
-      email: "example@example.com",
-      password: "123456",
-      repassword: "123456",
-    },
-  });
+  } = useForm();
 
   const onSubmit = async ({ email, password }) => {
     console.log(email, password);
