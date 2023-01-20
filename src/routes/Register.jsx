@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import Button from "../components/Button";
+import ButtonLoading from "../components/ButtonLoading";
 import FormError from "../components/FormError";
 import FormInput from "../components/FormInput";
 import Title from "../components/Title";
@@ -13,6 +14,8 @@ import { formValidate } from "../utils/formValidate";
 const Register = () => {
   const navigate = useNavigate();
   const { registerUser } = useContext(UserContext);
+  const [loading, setLoading] = useState(false);
+
   const { required, patternEmail, minLength, validateTrim, validateEquals } =
     formValidate();
 
@@ -33,6 +36,7 @@ const Register = () => {
   const onSubmit = async ({ email, password }) => {
     console.log(email, password);
     try {
+      setLoading(true);
       await registerUser(email, password);
       console.log("usuario creado");
       navigate("/");
@@ -40,6 +44,8 @@ const Register = () => {
       console.log(error.code);
       const { code, message } = erroresFirebase(error.code);
       setError(code, { message });
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -81,7 +87,13 @@ const Register = () => {
         >
           <FormError error={errors.repassword} />
         </FormInput>
-        <Button text={"Registrar"} type={"submit"} />
+        <Button
+          text={"Register"}
+          textCenter={"text-xl"}
+          type={"submit"}
+          loading={loading}
+          color="green"
+        />
       </form>
     </>
   );

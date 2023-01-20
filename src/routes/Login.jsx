@@ -1,7 +1,8 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
+import ButtonLoading from "../components/ButtonLoading";
 import FormError from "../components/FormError";
 import FormInput from "../components/FormInput";
 import Title from "../components/Title";
@@ -11,6 +12,7 @@ import { formValidate } from "../utils/formValidate";
 
 const Login = () => {
   const { loginUser } = useContext(UserContext);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { required, patternEmail, minLength, validateTrim } = formValidate();
 
@@ -30,6 +32,7 @@ const Login = () => {
   const onSubmit = async ({ email, password }) => {
     console.log(email, password);
     try {
+      setLoading(true);
       await loginUser(email, password);
       console.log("usuario creado");
       navigate("/");
@@ -37,6 +40,9 @@ const Login = () => {
       console.log(error.code);
       const { code, message } = erroresFirebase(error.code);
       setError(code, { message });
+    } finally {
+      // el finally se ejecuta siempre aunque sea falsa la verificacion
+      setLoading(false);
     }
   };
 
@@ -68,8 +74,12 @@ const Login = () => {
         >
           <FormError error={errors.password} />
         </FormInput>
-        <Button text={"Login"} textCenter={"text-xl"} type={"submit"} />
-        {/* textCenter={"text-2xl"} */}
+        <Button
+          text={"Login"}
+          textCenter={"text-xl"}
+          type={"submit"}
+          loading={loading}
+        />
       </form>
     </>
   );

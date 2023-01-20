@@ -7,7 +7,8 @@ import {
 import { createContext, useEffect, useState } from "react";
 import { auth } from "../firebase";
 
-//Aca se crea el contexto pra compartier la informacion y props entre componentes, luego este componente se importa idealmente en el main
+//Aca se crea el contexto pra compartier la informacion y props entre componentes,
+//luego este componente se importa idealmente en el main
 export const UserContext = createContext();
 
 const UserProvider = (props) => {
@@ -15,7 +16,7 @@ const UserProvider = (props) => {
 
   useEffect(() => {
     const unsuscribe = onAuthStateChanged(auth, (user) => {
-      console.log(user);
+      // console.log(user);
       if (user) {
         const { email, photoURL, displayName, uid } = user;
         setUser({ email, photoURL, displayName, uid });
